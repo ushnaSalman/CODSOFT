@@ -1,0 +1,56 @@
+import java.util.Scanner;
+/**
+ *
+ * @author Ushna Salman
+ */
+public class StudentGradeCalculator {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        // TODO code application logic here 
+        int ObtainedMarks;
+double Percentage;
+Scanner sc= new Scanner(System.in);
+	System.out.println("enter the marks of NUMERICAL COMPUTING out of 100:" );
+	int CP = sc.nextInt();
+	System.out.println("enter the marks of DIGITAL LOGIC DESIGN out of 100:" );
+	int DLD = sc.nextInt();
+	System.out.println("enter the marks of ISLAMIAT out of 100 :" );
+	int IS = sc.nextInt();
+	System.out.println("enter the marks of PAKISTAN STUDIES out of 100 :" );
+	int PS = sc.nextInt();
+	System.out.println("enter the marks of COAL out of 100 :" );
+	int CS = sc.nextInt();
+	System.out.println("enter the marks of DIFFRENTIAL EQUATIONS out of 100 :" );
+	int LAAG = sc.nextInt(); 
+	ObtainedMarks=CP+DLD+IS+PS+CS+LAAG;
+	System.out.println("OBTAINED MARKS IS:  " + " " + ObtainedMarks + 
+	" " + "out of 600");
+	Percentage=(ObtainedMarks/600.0*100);
+	System.out.println("PERCENTAGE IS: " + " " + Percentage+" " + "%");
+	
+	
+	if (Percentage >= 85) {
+    System.out.println("Grade A+");
+} else if (Percentage >= 80 && Percentage < 85) {
+    System.out.println("Grade A");
+} else if (Percentage >= 75 && Percentage < 80) {
+    System.out.println("Grade B+");
+} else if (Percentage >= 70 && Percentage < 75) {
+    System.out.println("Grade B");
+} else if (Percentage >= 65 && Percentage < 70) {
+    System.out.println("Grade C+");
+} else if (Percentage >= 60 && Percentage < 65) {
+    System.out.println("Grade C");
+} else if (Percentage >= 55 && Percentage < 60) {
+    System.out.println("Grade D+");
+} else if (Percentage >= 50 && Percentage < 55) {
+    System.out.println("Grade D");
+} else if (Percentage < 50) {
+    System.out.println("Grade F+");
+}
+    }
+    
+}
