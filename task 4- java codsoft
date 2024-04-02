@@ -1,0 +1,144 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+
+/**
+ *
+ * @author Ushna Salman
+ */
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class QuizApp extends JFrame {
+    private static final int QUESTION_TIMEOUT = 10000; // Time in milliseconds
+    private static final int NUM_QUESTIONS = 3;
+
+    private String[] questions = {
+            "What is the correct way to declare a variable in Java?",
+            "Which keyword is used to define a method in Java?",
+            "What is the output of 5 + 3 * 2?"
+    };
+
+    private String[][] options = {
+            {"A. int x;", "B. float x;", "C. String x;"},
+            {"A. function", "B. method", "C. def"},
+            {"A. 10", "B. 16", "C. 11"}
+    };
+
+    private char[] answers = {'A', 'B', 'C'};
+
+    private int score = 0;
+    private int currentQuestionIndex = 0;
+    private Timer questionTimer;
+
+    private JLabel questionLabel;
+    private JRadioButton[] optionButtons;
+    private ButtonGroup buttonGroup;
+    private JButton submitButton;
+
+    public QuizApp() {
+        setTitle("Java Quiz");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
+
+        questionLabel = new JLabel();
+        add(questionLabel, BorderLayout.NORTH);
+
+        JPanel optionsPanel = new JPanel();
+        optionsPanel.setLayout(new GridLayout(3, 1));
+        optionButtons = new JRadioButton[3];
+        buttonGroup = new ButtonGroup();
+        for (int i = 0; i < optionButtons.length; i++) {
+            optionButtons[i] = new JRadioButton();
+            optionsPanel.add(optionButtons[i]);
+            buttonGroup.add(optionButtons[i]);
+        }
+        add(optionsPanel, BorderLayout.CENTER);
+
+        submitButton = new JButton("Submit");
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                checkAnswer();
+            }
+        });
+        add(submitButton, BorderLayout.SOUTH);
+
+        showNextQuestion();
+    }
+
+    private void showNextQuestion() {
+        if (currentQuestionIndex < NUM_QUESTIONS) {
+            questionLabel.setText(questions[currentQuestionIndex]);
+            for (int i = 0; i < optionButtons.length; i++) {
+                optionButtons[i].setText(options[currentQuestionIndex][i]);
+                optionButtons[i].setSelected(false);
+            }
+
+            startTimer();
+        } else {
+            showResult();
+        }
+    }
+
+    private void startTimer() {
+        ActionListener timerAction = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Time's up!\nCorrect answer was: " +
+                        options[currentQuestionIndex][answers[currentQuestionIndex] - 'A']);
+                currentQuestionIndex++;
+                showNextQuestion();
+            }
+        };
+
+        if (questionTimer != null) {
+            questionTimer.stop();
+        }
+
+        questionTimer = new Timer(QUESTION_TIMEOUT, timerAction);
+        questionTimer.setRepeats(false);
+        questionTimer.start();
+    }
+
+    private void checkAnswer() {
+        char selectedAnswer = ' ';
+        for (int i = 0; i < optionButtons.length; i++) {
+            if (optionButtons[i].isSelected()) {
+                selectedAnswer = (char) ('A' + i);
+                break;
+            }
+        }
+
+        if (selectedAnswer == answers[currentQuestionIndex]) {
+            score++;
+            JOptionPane.showMessageDialog(null, "Correct!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Incorrect!\nCorrect answer was: " +
+                    options[currentQuestionIndex][answers[currentQuestionIndex] - 'A']);
+        }
+
+        currentQuestionIndex++;
+        showNextQuestion();
+    }
+
+    private void showResult() {
+        JOptionPane.showMessageDialog(null, "Quiz completed!\nYour final score: " +
+                score + " out of " + NUM_QUESTIONS);
+        dispose();
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new QuizApp().setVisible(true);
+            }
+        });
+    }
+}
